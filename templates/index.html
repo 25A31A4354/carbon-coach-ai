@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <title>CarbonCoach AI | Find Your One High-Impact Lifestyle Change</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Background Elements for Organic Aesthetic -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="glass-overlay"></div>
+
+    <header class="app-header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <span class="logo-icon"><ion-icon name="leaf-outline"></ion-icon></span>
+                <span class="logo-text">CarbonCoach AI</span>
+            </a>
+            <div class="header-tagline">Action over metrics.</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Error Banner -->
+        <div id="error-banner" aria-live="assertive" style="display: none; background: #ffebee; color: #c62828; padding: 12px 24px; text-align: center; font-weight: 500; border-bottom: 1px solid #ffcdd2; margin-bottom: 20px; border-radius: var(--radius-sm);">
+            Failed to connect to the analysis engine. Please try again.
+        </div>
+
+        <!-- 1. LANDING PAGE -->
+        <section id="landing-view" class="view-section active">
+            <div class="hero-container">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    Behavior-Change Engine
+                </div>
+                <h1 class="hero-title">
+                    Find the <span>ONE</span> lifestyle change that reduces your carbon footprint the most.
+                </h1>
+                <p class="hero-subtitle">
+                    Skip the complex calculators. CarbonCoach AI identifies your single largest carbon leak and hands you an actionable mission to plug it.
+                </p>
+                <div class="hero-actions">
+                    <button id="btn-start" class="btn btn-primary btn-large">
+                        Start Analysis
+                        <ion-icon name="arrow-forward-outline" class="btn-arrow"></ion-icon>
+                    </button>
+                </div>
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <div class="feature-icon"><ion-icon name="sparkles-outline"></ion-icon></div>
+                        <h3>Zero Calculations</h3>
+                        <p>No utility bills or offset math required.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><ion-icon name="trending-down-outline"></ion-icon></div>
+                        <h3>Single High-Impact Focus</h3>
+                        <p>One specific target yields the highest compliance.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><ion-icon name="checkbox-outline"></ion-icon></div>
+                        <h3>Actionable Missions</h3>
+                        <p>Weekly behavioral shifts designed for real life.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ASSESSMENT WIZARD -->
+        <section id="assessment-view" class="view-section">
+            <div class="wizard-container">
+                <div class="wizard-header">
+                    <div class="wizard-progress">
+                        <div class="progress-bar-fill" style="width: 25%;"></div>
+                    </div>
+                    <div class="wizard-steps-indicator">
+                        Question <span id="current-step-num">1</span> of 4
+                    </div>
+                </div>
+
+                <div class="wizard-body">
+                    <!-- Step 1: Transport -->
+                    <div class="wizard-step active" data-step="1" data-category="transport">
+                        <div class="step-icon-header"><ion-icon name="car-sport-outline" aria-hidden="true"></ion-icon></div>
+                        <fieldset style="border:none; padding:0; margin:0;">
+                            <legend class="step-question">How do you typically commute or travel locally?</legend>
+                            <div class="options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="transport" value="walking" checked aria-label="Walking">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="footsteps-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Walking</span>
+                                        <span class="option-desc">Active travel, zero emissions</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="transport" value="bicycle" aria-label="Bicycle">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="bicycle-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Bicycle</span>
+                                        <span class="option-desc">Human-powered, zero footprint</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="transport" value="public_transport" aria-label="Public Transport">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="bus-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Public Transport</span>
+                                        <span class="option-desc">Trains, buses, shared transit</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="transport" value="bike_scooter" aria-label="Electric Scooter">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="bicycle-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Electric Scooter / Motorbike</span>
+                                        <span class="option-desc">Lightweight personal motor vehicle</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="transport" value="car" aria-label="Private Car">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="car-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Private Car</span>
+                                        <span class="option-desc">Single-passenger or family car travel</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Step 2: Food -->
+                    <div class="wizard-step" data-step="2" data-category="food">
+                        <div class="step-icon-header"><ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon></div>
+                        <fieldset style="border:none; padding:0; margin:0;">
+                            <legend class="step-question">What is your primary diet or food habit?</legend>
+                            <div class="options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="food" value="vegetarian" aria-label="Vegetarian">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="nutrition-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Vegetarian / Vegan</span>
+                                        <span class="option-desc">Plant-forward, minimal meat</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="food" value="mixed" checked aria-label="Mixed Diet">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="fast-food-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Mixed Diet</span>
+                                        <span class="option-desc">Balance of grains, vegetables, and meat</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="food" value="mostly_non_veg" aria-label="Mostly Non-Vegetarian">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="restaurant-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Mostly Non-Vegetarian</span>
+                                        <span class="option-desc">Meat featured in almost every meal</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="food" value="food_delivery" aria-label="Frequent Food Delivery">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="bicycle-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Frequent Food Delivery</span>
+                                        <span class="option-desc">Pre-packaged meals delivered frequently</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Step 3: Energy -->
+                    <div class="wizard-step" data-step="3" data-category="energy">
+                        <div class="step-icon-header"><ion-icon name="thermometer-outline" aria-hidden="true"></ion-icon></div>
+                        <fieldset style="border:none; padding:0; margin:0;">
+                            <legend class="step-question">How long is your home Air Conditioning active daily?</legend>
+                            <div class="options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="energy" value="ac_under_2" checked aria-label="Less than 2 hours">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="rainy-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Less than 2 hours</span>
+                                        <span class="option-desc">Minimal usage, natural ventilation</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="energy" value="ac_2_5" aria-label="2 to 5 hours">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="partly-sunny-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">2 to 5 hours</span>
+                                        <span class="option-desc">Active during peak heat or sleeping</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="energy" value="ac_5_8" aria-label="5 to 8 hours">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="sunny-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">5 to 8 hours</span>
+                                        <span class="option-desc">Active throughout the afternoon/evening</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="energy" value="ac_above_8" aria-label="More than 8 hours">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="flame-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">More than 8 hours</span>
+                                        <span class="option-desc">Continuous operation throughout day/night</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Step 4: Shopping -->
+                    <div class="wizard-step" data-step="4" data-category="shopping">
+                        <div class="step-icon-header"><ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon></div>
+                        <fieldset style="border:none; padding:0; margin:0;">
+                            <legend class="step-question">How frequently do you buy clothing or non-essential goods?</legend>
+                            <div class="options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="shopping" value="rarely" checked aria-label="Rarely">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="hourglass-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Rarely</span>
+                                        <span class="option-desc">Only when replacing worn-out essentials</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="shopping" value="monthly" aria-label="Monthly">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="calendar-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Monthly</span>
+                                        <span class="option-desc">Occasional recreational shopping</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="shopping" value="weekly" aria-label="Weekly">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="cart-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Weekly</span>
+                                        <span class="option-desc">Regular browsing, fast fashion habits</span>
+                                    </span>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="shopping" value="frequent" aria-label="Frequent">
+                                    <span class="option-content">
+                                        <span class="option-icon"><ion-icon name="flash-outline" aria-hidden="true"></ion-icon></span>
+                                        <span class="option-title">Frequent</span>
+                                        <span class="option-desc">Multiple times weekly, delivery box cycles</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div class="wizard-footer">
+                    <button id="btn-prev" class="btn btn-secondary disabled" disabled>Back</button>
+                    <button id="btn-next" class="btn btn-primary">Next</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. RESULTS & DASHBOARD -->
+        <section id="results-view" class="view-section" aria-live="polite">
+            <div class="results-header">
+                <h2>Your Behavioral Audit</h2>
+                <p>We analyzed your responses and isolated the one single area where your choices can make the biggest environmental impact.</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Left Column: Leak and Mission -->
+                <div class="dashboard-col-left">
+                    <!-- Persona Card -->
+                    <div class="dashboard-card persona-card animate-slide-up">
+                        <div class="card-badge badge-accent">Carbon Persona</div>
+                        <h3 id="persona-name" class="persona-title">Conscious Consumer</h3>
+                        <p id="persona-desc" class="persona-description">You are highly mindful of your environmental impact, consistently making sustainable choices.</p>
+                        <div class="persona-opportunity">
+                            <h4>Biggest Opportunity</h4>
+                            <p id="persona-opportunity-text">Advocate for sustainability and share your habits with your community.</p>
+                        </div>
+                    </div>
+
+                    <!-- Leak Card -->
+                    <div class="dashboard-card leak-card animate-slide-up">
+                        <div class="card-badge">Personalized Insight</div>
+                        
+                        <!-- Impact Meter -->
+                        <div class="impact-meter-container">
+                            <div class="impact-meter-label">
+                                <span>Impact Severity</span>
+                                <span id="impact-severity-text" class="severity-high">High</span>
+                            </div>
+                            <div class="impact-meter-bar">
+                                <div id="impact-severity-fill" class="severity-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <h3 id="leak-title" class="leak-title">Frequent Food Delivery</h3>
+                        <p class="leak-intro">Based on your habits, your largest avoidable emissions come from <strong id="leak-name-inline">Frequent Food Delivery</strong>.</p>
+                        <p id="leak-explanation" class="leak-explanation">
+                            Ordering delivery results in excessive emissions from single-portion motorcycle transit, redundant plastic packaging, and restaurant energy intensity. Swapping these for simple home-cooked meals yields immediate impact.
+                        </p>
+                    </div>
+
+                    <!-- Weekly Mission Card -->
+                    <div id="mission-card" class="dashboard-card mission-card animate-slide-up" style="animation-delay: 0.1s;">
+                        <div class="card-badge badge-accent">Weekly Mission</div>
+                        <div class="mission-layout">
+                            <div class="mission-checkbox-container">
+                                <div id="mission-checkbox" class="mission-checkbox">
+                                    <ion-icon name="checkmark-outline"></ion-icon>
+                                </div>
+                            </div>
+                            <div class="mission-text-container">
+                                <h3 class="mission-header-text">Weekly Mission</h3>
+                                <p id="mission-description" class="mission-description">
+                                    Replace 2 food deliveries with home-cooked meals this week.
+                                </p>
+                                <div class="motivation-section">
+                                    <h4>Why this matters</h4>
+                                    <p id="mission-motivation">Reducing delivery cuts packaging waste and delivery vehicle emissions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="btn-accept-mission" class="btn btn-primary btn-block">
+                            Accept Weekly Mission
+                        </button>
+                        <div class="success-message" style="display: none;">
+                            <div class="success-icon"><ion-icon name="checkmark-circle"></ion-icon></div>
+                            <h4>Mission Activated!</h4>
+                            <p>You committed to action. Track your progress daily.</p>
+                        </div>
+                    </div>
+
+                    <!-- Why This Mission Card -->
+                    <div class="dashboard-card reasoning-card animate-slide-up" style="animation-delay: 0.12s;">
+                        <div class="card-badge badge-accent">Mission Logic</div>
+                        <h3 class="reasoning-title" style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: 8px;">Why This Mission?</h3>
+                        <p id="mission-reasoning" class="reasoning-text" style="font-size: 1rem; color: var(--color-text-light); line-height: 1.6;"></p>
+                    </div>
+
+                    <!-- Savings Impact Engine Card -->
+                    <div class="dashboard-card savings-card animate-slide-up" style="animation-delay: 0.15s;">
+                        <div class="card-badge badge-accent">Impact Analysis</div>
+                        <h3 class="savings-title">Environmental + Financial Impact</h3>
+                        <p class="savings-subtitle">Connecting sustainability with personal benefit.</p>
+                        
+                        <div class="savings-grid">
+                            <div class="savings-item">
+                                <div class="savings-icon"><ion-icon name="leaf"></ion-icon></div>
+                                <div class="savings-info">
+                                    <span class="savings-label">Carbon Impact</span>
+                                    <span id="savings-carbon-impact" class="savings-value">High</span>
+                                </div>
+                            </div>
+                            <div class="savings-item">
+                                <div class="savings-icon"><ion-icon name="fitness"></ion-icon></div>
+                                <div class="savings-info">
+                                    <span class="savings-label">Difficulty</span>
+                                    <span id="savings-difficulty" class="savings-value">Low</span>
+                                </div>
+                            </div>
+                            <div class="savings-item highlight">
+                                <div class="savings-icon"><ion-icon name="wallet"></ion-icon></div>
+                                <div class="savings-info">
+                                    <span class="savings-label">Estimated Savings*</span>
+                                    <span id="savings-amount" class="savings-value">₹0/week</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="savings-disclaimer">* Estimates are approximate and depend on individual usage patterns and local pricing.</p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Simulation -->
+                <div class="dashboard-col-right">
+                    
+                    <!-- Streak Card -->
+                    <div class="dashboard-card streak-card animate-slide-up" style="animation-delay: 0.15s; margin-bottom: 24px;">
+                        <div class="streak-layout">
+                            <div class="streak-icon-container">
+                                <ion-icon name="flame"></ion-icon>
+                            </div>
+                            <div class="streak-details">
+                                <h3 class="streak-title">Carbon Streak</h3>
+                                <div class="streak-stats">
+                                    <div class="stat-item">
+                                        <span id="streak-count" class="stat-value">0</span>
+                                        <span class="stat-label">Days</span>
+                                    </div>
+                                    <div class="stat-divider"></div>
+                                    <div class="stat-item">
+                                        <span id="missions-completed" class="stat-value">0</span>
+                                        <span class="stat-label">Missions</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card simulator-card animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="card-badge badge-simulation">Future Impact Simulator</div>
+                        <h3 class="simulation-title">Current vs. Better Future</h3>
+                        <p class="simulation-subtitle">See how completing your mission shifts your footprint.</p>
+                        
+                        <div class="simulator-comparison">
+                            <!-- Current Future Card -->
+                            <div class="simulator-panel current-panel">
+                                <div class="panel-header">CURRENT</div>
+                                <div class="panel-metric">
+                                    <span id="overall-current-score" class="metric-value">0</span>
+                                    <span class="metric-unit">Units</span>
+                                </div>
+                                <div class="panel-details">
+                                    <div class="detail-row">
+                                        <ion-icon name="warning-outline"></ion-icon>
+                                        <span id="current-pattern-text">High impact pattern</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Better Future Card -->
+                            <div class="simulator-panel future-panel">
+                                <div class="panel-header">BETTER FUTURE</div>
+                                <div class="panel-metric">
+                                    <span id="overall-future-score" class="metric-value">0</span>
+                                    <span class="metric-unit">Units</span>
+                                </div>
+                                <div class="panel-details">
+                                    <div class="detail-row">
+                                        <ion-icon name="leaf-outline"></ion-icon>
+                                        <span><span id="impact-percent">0%</span> Reduction</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gemini Insight -->
+                        <div class="insight-container animate-slide-up" style="animation-delay: 0.3s; margin-top: 24px; padding: 16px; background: var(--color-primary-light); border-radius: var(--radius-sm); border-left: 4px solid var(--color-primary);">
+                            <div style="font-family: var(--font-heading); font-size: 0.85rem; color: var(--color-primary); font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                                <ion-icon name="sparkles"></ion-icon> AI Insight
+                            </div>
+                            <p id="future-insight" style="font-size: 0.95rem; color: var(--color-text-main); margin: 0;"></p>
+                        </div>
+                    </div>
+
+                    <!-- Reset Analysis Action -->
+                    <div class="reset-container">
+                        <button id="btn-reset" class="btn btn-secondary btn-block">
+                            <ion-icon name="refresh-outline" class="btn-icon"></ion-icon>
+                            Re-Assess Lifestyle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 CarbonCoach AI. Focus on what counts.</p>
+        </div>
+    </footer>
+
+    <!-- Ionicons CDN -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
