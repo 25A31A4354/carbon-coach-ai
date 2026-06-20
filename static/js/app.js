@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Results components
     const leakTitle = document.getElementById('leak-title');
+    const leakNameEl = document.getElementById('leak-name-inline');
     const leakExplanation = document.getElementById('leak-explanation');
     const impactPercentText = document.getElementById('impact-percent');
     const radialBar = document.getElementById('radial-bar');

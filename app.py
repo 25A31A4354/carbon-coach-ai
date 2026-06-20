@@ -2,18 +2,10 @@ import os
 import json
 from typing import Tuple, Dict, Any
 from flask import Flask, render_template, request, jsonify
-import google.generativeai as genai
-from dotenv import load_dotenv
 
 from config import TRANSPORT_SCORES, FOOD_SCORES, ENERGY_SCORES, SHOPPING_SCORES
 
-load_dotenv()
-
 app = Flask(__name__)
-
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
 
 @app.errorhandler(400)
 def bad_request(error: Exception) -> Tuple[Any, int]:
@@ -25,8 +17,8 @@ def internal_error(error: Exception) -> Tuple[Any, int]:
     """Handle 500 Internal Server errors gracefully."""
     return jsonify({'error': 'Internal Server Error', 'message': 'An unexpected error occurred.'}), 500
 
-def get_fallback_persona(total_score: int, max_category: str, transport_key: str, food_key: str) -> Tuple[str, str, str]:
-    """Determine a fallback persona based on user scores."""
+def get_persona(total_score: int, max_category: str, transport_key: str, food_key: str) -> Tuple[str, str, str]:
+    """Determine a persona based on user scores."""
     if total_score <= 25:
         return "Conscious Consumer", "You are highly mindful of your environmental impact, consistently making sustainable choices.", "Advocate for sustainability and share your habits with your community."
     
@@ -42,64 +34,7 @@ def get_fallback_persona(total_score: int, max_category: str, transport_key: str
         else:
             return "Dietary Impact User", "Your diet, particularly meat consumption, is the primary driver of your carbon footprint.", "Incorporate more plant-based meals into your weekly diet."
 
-def generate_gemini_insights(leak_name: str, user_choices: Dict[str, str], fallback_reason: str, fallback_mission: str, fallback_motivation: str, fallback_persona: Tuple[str, str, str], fallback_difficulty: str, fallback_savings: str, fallback_reasoning: str) -> Tuple[str, str, str, str, str, str, str, str, str, str]:
-    """Generate personalized qualitative insights using Gemini."""
-    fallback_insight = "You are making a significant choice to prioritize the planet. Keep going!"
-    f_p_name, f_p_desc, f_p_opp = fallback_persona
-    
-    if not GEMINI_API_KEY:
-        print("No GEMINI_API_KEY found. Using fallback responses.")
-        return fallback_reason, fallback_mission, fallback_insight, fallback_motivation, f_p_name, f_p_desc, f_p_opp, fallback_difficulty, fallback_savings, fallback_reasoning
-        
-    prompt = f"""
-    You are CarbonCoach AI. The user has the following lifestyle habits:
-    - Transport: {user_choices['transport']}
-    - Food: {user_choices['food']}
-    - Energy: {user_choices['energy']}
-    - Shopping: {user_choices['shopping']}
-    
-    Their identified biggest carbon leak is: {leak_name}.
-    
-    Generate a JSON response containing ONLY the following keys with string values:
-    - "reason": A personalized, scientific yet simple explanation (1-2 sentences) of why this is their biggest leak based on their specific combination of lifestyle habits.
-    - "weekly_mission": A creative, highly actionable weekly mission to address this specific leak.
-    - "future_insight": A short, inspiring insight (1 sentence) about their future lifestyle after successfully completing the mission.
-    - "motivation": A concise 1-sentence explanation of why this mission matters globally (e.g. 'Reducing short vehicle trips lowers...').
-    - "mission_reasoning": A 2-3 sentence paragraph explaining why this specific mission was selected, why it has the highest impact, and why it is realistic for the user. Use simple, highly personalized language.
-    - "persona_name": A 2-3 word professional title classifying their lifestyle archetype (e.g. 'Conscious Consumer', 'Urban Commuter').
-    - "persona_description": A 1-2 sentence insightful description of this persona based on their choices.
-    - "persona_opportunity": A short sentence highlighting their biggest opportunity for improvement.
-    - "difficulty_level": A single string ("Low", "Medium", or "High") representing the mission's difficulty.
-    - "estimated_savings": A single string estimating the financial savings in INR format (e.g. "₹300–₹500/week", "₹150–₹400/month") by completing the mission. Base this on Indian realistic contexts. Keep it realistic and marked as approximate.
-    
-    Do NOT include Markdown formatting like ```json in the output. Just return the raw JSON object.
-    """
-    
-    try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        response = model.generate_content(
-            prompt,
-            generation_config=genai.GenerationConfig(
-                response_mime_type="application/json",
-                temperature=0.7
-            )
-        )
-        data = json.loads(response.text)
-        return (
-            data.get("reason", fallback_reason),
-            data.get("weekly_mission", fallback_mission),
-            data.get("future_insight", fallback_insight),
-            data.get("motivation", fallback_motivation),
-            data.get("persona_name", f_p_name),
-            data.get("persona_description", f_p_desc),
-            data.get("persona_opportunity", f_p_opp),
-            data.get("difficulty_level", fallback_difficulty),
-            data.get("estimated_savings", fallback_savings),
-            data.get("mission_reasoning", fallback_reasoning)
-        )
-    except Exception as e:
-        print(f"Gemini API Error: {e}")
-        return fallback_reason, fallback_mission, fallback_insight, fallback_motivation, f_p_name, f_p_desc, f_p_opp, fallback_difficulty, fallback_savings, fallback_reasoning
+
 
 @app.route('/')
 def index() -> str:
@@ -252,31 +187,21 @@ def analyze() -> Any:
                 fallback_savings = "₹200–₹500/month"
                 future_scores['shopping'] = 5
 
-    # Generate insights via Gemini (or fallback if it fails)
-    user_choices_labels = {
-        'transport': t_data['label'],
-        'food': f_data['label'],
-        'energy': e_data['label'],
-        'shopping': s_data['label']
-    }
-    
     total_current = sum(scores.values())
     total_future = sum(future_scores.values())
 
-    fallback_persona = get_fallback_persona(total_current, max_category, transport_key, food_key)
-    fallback_reasoning = f"This mission directly targets your habits around {leak_category.lower()}, which is your largest footprint area. We selected it because it is highly effective while still being a realistic adjustment to your daily routine."
+    p_name, p_desc, p_opp = get_persona(total_current, max_category, transport_key, food_key)
     
-    reason, weekly_mission, future_insight, motivation, p_name, p_desc, p_opp, difficulty, savings, m_reasoning = generate_gemini_insights(
-        leak_name=leak_name,
-        user_choices=user_choices_labels,
-        fallback_reason=fallback_reason,
-        fallback_mission=fallback_mission,
-        fallback_motivation=fallback_motivation,
-        fallback_persona=fallback_persona,
-        fallback_difficulty=fallback_difficulty,
-        fallback_savings=fallback_savings,
-        fallback_reasoning=fallback_reasoning
-    )
+    # Generate deterministic outputs
+    reason = fallback_reason
+    weekly_mission = fallback_mission
+    motivation = fallback_motivation
+    difficulty = fallback_difficulty
+    savings = fallback_savings
+    
+    m_reasoning = f"Based on your habits, your biggest carbon leak is {leak_category}. This mission was chosen because it provides the highest reduction opportunity with minimal lifestyle disruption."
+    
+    future_insight = "You are making a significant choice to prioritize the planet. Keep going!"
     
     impact_severity = "High" if max_score >= 40 else "Medium" if max_score >= 20 else "Low"
     
