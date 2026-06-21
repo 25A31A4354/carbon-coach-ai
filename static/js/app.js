@@ -64,6 +64,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const severityText = document.getElementById('impact-severity-text');
     const severityFill = document.getElementById('impact-severity-fill');
     const successMessageBlock = document.querySelector('.success-message');
+    
+    // Cached Results DOM nodes for efficiency
+    const pOppEl = document.getElementById('persona-opportunity-text');
+    const savingsCarbonImpactEl = document.getElementById('savings-carbon-impact');
+    const savingsDifficultyEl = document.getElementById('savings-difficulty');
+    const savingsAmountEl = document.getElementById('savings-amount');
+    const missionReasoningEl = document.getElementById('mission-reasoning');
+    const personaName = document.getElementById('persona-name');
+    const personaDesc = document.getElementById('persona-desc');
+    const currentPatternText = document.getElementById('current-pattern-text');
+    const futureInsightEl = document.getElementById('future-insight');
+    const streakCountEl = document.getElementById('streak-count');
+    const missionsCompletedEl = document.getElementById('missions-completed');
 
     // Initialize Event Listeners
     initEventListeners();
@@ -260,26 +273,12 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {Object} data Application analysis response data.
      */
     function renderResults(data) {
-        const pOppEl = document.getElementById('persona-opportunity-text');
-        
-        const savingsCarbonImpactEl = document.getElementById('savings-carbon-impact');
-        const savingsDifficultyEl = document.getElementById('savings-difficulty');
-        const savingsAmountEl = document.getElementById('savings-amount');
-        
-        const missionReasoningEl = document.getElementById('mission-reasoning');
-        
         if (leakNameEl) leakNameEl.textContent = data.leak_name || 'General';
-        
-        const personaName = document.getElementById('persona-name');
-        const personaDesc = document.getElementById('persona-desc');
-        const personaOpp = document.getElementById('persona-opportunity-text');
         
         if (data.persona) {
             if (personaName) personaName.textContent = data.persona.name || 'Conscious Consumer';
             if (personaDesc) personaDesc.textContent = data.persona.description || '';
-            if (data.persona && data.persona.opportunity && pOppEl) {
-                pOppEl.textContent = data.persona.opportunity;
-            }
+            if (pOppEl) pOppEl.textContent = data.persona.opportunity || '';
         }
         
         // Savings Impact Engine updates
@@ -310,21 +309,25 @@ document.addEventListener('DOMContentLoaded', () => {
             severityText.textContent = severity;
             severityText.className = 'severity-' + severity.toLowerCase();
             const widthPct = severity === 'High' ? '100%' : severity === 'Medium' ? '60%' : '30%';
-            severityFill.style.width = '0%';
-            setTimeout(() => severityFill.style.width = widthPct, 100);
+            
+            // Avoid reflow by using requestAnimationFrame
+            requestAnimationFrame(() => {
+                severityFill.style.width = '0%';
+                requestAnimationFrame(() => {
+                    severityFill.style.width = widthPct;
+                });
+            });
         }
         
         if (data.simulation) {
             if (overallCurrentScoreText) overallCurrentScoreText.textContent = data.simulation.total_current;
             if (overallFutureScoreText) overallFutureScoreText.textContent = data.simulation.total_future;
             
-            const currentPatternText = document.getElementById('current-pattern-text');
             if (currentPatternText) {
                 currentPatternText.textContent = (data.impact_severity === 'High' ? 'High impact pattern' : data.impact_severity === 'Medium' ? 'Moderate impact pattern' : 'Low impact pattern');
             }
         }
         
-        const futureInsightEl = document.getElementById('future-insight');
         if (futureInsightEl && data.future_insight) {
             futureInsightEl.textContent = data.future_insight;
         }
@@ -392,9 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function updateStreakUI() {
-        const streakCountEl = document.getElementById('streak-count');
-        const missionsCompletedEl = document.getElementById('missions-completed');
-        
         if (streakCountEl) {
             streakCountEl.textContent = parseInt(localStorage.getItem('carbonCoach_streak')) || 0;
         }
